@@ -11,26 +11,29 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["538418621991"] # Canonical
+  owners = ["099720109477"]  # Canonical
 }
+
+resource "random_string" "db_pass" {
+  length = 10
+}
+
+
 
 resource "aws_instance" "webserver" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-
+  key_name = var.key_name
   tags = {
     Name = "AlphaServer"
   }
+  user_data = data.template_file.tracing_data.rendered
 }
-resource "random_string" "db_pass" {
-  length = 10
-}
+
 data "template_file" "tracing_data" {
   template = file("${path.module}/../../src/db_server.sh")
   vars = {
-    DB_HOST = aws_instance.webserver.associate_public_ip_address
     DB_PASSWORD = random_string.db_pass.result
-    DB_PORT = "5432"
     DB_NAME = "ssh_logging"
     DB_USER = "postgres"
   }
