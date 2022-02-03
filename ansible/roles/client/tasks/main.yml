@@ -17,7 +17,7 @@
     mode: 0755
 
 - name: execute the ssh reporting script
-  shell: /home/ubuntu/client_db.sh postgres 54.165.152.36 {{ DB_PASSWORD }}
+  shell: /home/ubuntu/client_db.sh postgres xxxxx{{ DB_PASSWORD }}
   args:
     executable: /bin/bash
   register: output
