@@ -1,0 +1,25 @@
+---
+
+- name: Copy source code
+  copy:
+    src: ../../../src/ssh_logging_trace.sh
+    dest: /home/ubuntu/
+    owner: ansible
+    group: ansible
+    mode: 0755
+
+- name: Copy client code
+  copy:
+    src: ../../../src/client_db.sh
+    dest: /home/ubuntu/
+    owner: ansible
+    group: ansible
+    mode: 0755
+
+- name: execute the ssh reporting script
+  shell: /home/ubuntu/client_db.sh postgres 54.165.152.36 {{ DB_PASSWORD }}
+  args:
+    executable: /bin/bash
+  register: output
+- debug:
+    var: output.stdout_lines

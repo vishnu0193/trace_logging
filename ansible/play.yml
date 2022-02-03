@@ -1,0 +1,7 @@
+---
+
+- name: Copy the source code
+  hosts: client
+  become: true
+  roles:
+    - name: client

@@ -18,6 +18,11 @@ resource "random_string" "db_pass" {
   length = 10
 }
 
+resource "aws_ssm_parameter" "db_pass" {
+  name  = "/db/pass"
+  type  = "String"
+  value = random_string.db_pass.result
+}
 
 
 resource "aws_instance" "webserver" {
